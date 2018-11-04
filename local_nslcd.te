@@ -1,0 +1,36 @@
+module local_nslcd 1.0;
+
+require {
+    type nslcd_t;
+    type etc_t;
+    type init_t;
+    type initrc_var_run_t;
+    type nscd_var_run_t;
+    type sysctl_kernel_t;
+    type sysctl_t;
+    type system_dbusd_t;
+    type system_dbusd_var_run_t;
+    class file { map create lock open read write unlink };
+    class dbus { send_msg };
+    class dir { add_name write search remove_name };
+    class sock_file { create setattr write unlink };
+    class capability { net_admin sys_resource };
+    class fifo_file { read write };
+    class unix_stream_socket { connectto };
+}
+allow nslcd_t etc_t:file { map };
+allow nslcd_t init_t:dbus { send_msg };
+allow nslcd_t initrc_var_run_t:dir { add_name write remove_name search };
+allow nslcd_t initrc_var_run_t:file { create lock open read write unlink };
+allow nslcd_t initrc_var_run_t:sock_file { create setattr unlink };
+allow nslcd_t nscd_var_run_t:file { map };
+allow nslcd_t self:capability { net_admin sys_resource };
+allow nslcd_t self:fifo_file { read write };
+allow nslcd_t sysctl_kernel_t:dir { search };
+allow nslcd_t sysctl_kernel_t:file { open read };
+allow nslcd_t sysctl_t:dir { search };
+allow nslcd_t system_dbusd_t:dbus { send_msg };
+allow nslcd_t system_dbusd_t:unix_stream_socket { connectto };
+allow nslcd_t system_dbusd_var_run_t:sock_file { write };
+allow nslcd_t system_dbusd_var_run_t:dir search;
+

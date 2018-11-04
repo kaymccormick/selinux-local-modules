@@ -1,0 +1,18 @@
+module local_auditd 1.0;
+
+require {
+    type auditd_t;
+    type etc_t;
+    type initrc_var_run_t;
+    type nscd_var_run_t;
+    type nslcd_t;
+    class file { map };
+    class sock_file { write };
+    class unix_stream_socket { connectto };
+    class dir { search };
+}
+allow auditd_t etc_t:file { map };
+allow auditd_t initrc_var_run_t:sock_file { write };
+allow auditd_t nscd_var_run_t:file { map };
+allow auditd_t nslcd_t:unix_stream_socket { connectto };
+allow auditd_t initrc_var_run_t:dir search;

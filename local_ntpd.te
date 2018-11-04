@@ -1,0 +1,16 @@
+module local_ntpd 1.0;
+
+require {
+    type ntpd_t;
+    type etc_t;
+    type nscd_t;
+    type nscd_var_run_t;
+    type var_lock_t;
+    class file { map write };
+    class nscd { getserv shmemserv };
+}
+allow ntpd_t etc_t:file { map };
+allow ntpd_t nscd_t:nscd { getserv shmemserv };
+allow ntpd_t nscd_var_run_t:file { map };
+allow ntpd_t var_lock_t:file { write };
+

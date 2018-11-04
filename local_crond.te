@@ -1,0 +1,25 @@
+module local_crond 1.0;
+
+require {
+    type crond_t;
+    type etc_t;
+    type init_t;
+    type initrc_var_run_t;
+    type nscd_var_run_t;
+    type shadow_t;
+    type user_home_t;
+    class file { map };
+    class dbus { send_msg };
+    class sock_file { write };
+    class dir { search };
+    class capability { net_admin };
+    class lnk_file { read };
+}
+allow crond_t etc_t:file { map };
+allow crond_t init_t:dbus { send_msg };
+allow crond_t initrc_var_run_t:sock_file { write };
+allow crond_t nscd_var_run_t:file { map };
+allow crond_t self:capability { net_admin };
+allow crond_t shadow_t:file { map };
+allow crond_t user_home_t:lnk_file { read };
+allow crond_t initrc_var_run_t:dir search;

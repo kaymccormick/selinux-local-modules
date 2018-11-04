@@ -1,0 +1,20 @@
+module local_pkcs_slotd 1.0;
+
+require {
+    type pkcs_slotd_t;
+    type etc_t;
+    type var_lock_t;
+    type var_log_t;
+    type bin_t;
+    class file { map create lock open read setattr };
+    class dir { add_name getattr write search };
+    class lnk_file { read };
+}
+allow pkcs_slotd_t etc_t:file { map };
+allow pkcs_slotd_t var_lock_t:dir { add_name getattr write };
+allow pkcs_slotd_t var_lock_t:file { create lock open read setattr };
+allow pkcs_slotd_t var_lock_t:lnk_file { read };
+allow pkcs_slotd_t var_log_t:dir { getattr };
+allow pkcs_slotd_t bin_t:dir search;
+allow pkcs_slotd_t var_lock_t:dir search;
+allow pkcs_slotd_t var_log_t:dir search;

@@ -1,0 +1,31 @@
+module local_httpd 1.0;
+
+require {
+    type httpd_t;
+    type default_t;
+    type hugetlbfs_t;
+    type initrc_var_run_t;
+    type init_t;
+    type nscd_var_run_t;
+    type httpd_log_t;
+    type etc_t;
+    type unconfined_t;
+    class dir { search getattr };
+    class dbus { send_msg };
+    class file { map write };
+    class process { signull };
+    class capability { dac_read_search };
+    class sock_file write;
+}
+
+allow httpd_t etc_t:file map;
+allow httpd_t httpd_log_t:file write;
+allow httpd_t default_t:dir { search getattr };
+allow httpd_t init_t:dbus { send_msg };
+allow httpd_t nscd_var_run_t:file { map };
+allow httpd_t unconfined_t:process signull;
+allow httpd_t hugetlbfs_t:file map;
+allow httpd_t initrc_var_run_t:dir search;
+allow httpd_t self:capability dac_read_search;
+allow httpd_t initrc_var_run_t:sock_file write;
+

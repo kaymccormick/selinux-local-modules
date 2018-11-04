@@ -1,0 +1,12 @@
+module local_policykit 1.0;
+
+require {
+    type policykit_t;
+    type nscd_var_run_t;
+    type user_home_t;
+    class file { map };
+    class lnk_file { read };
+}
+allow policykit_t nscd_var_run_t:file { map };
+allow policykit_t user_home_t:lnk_file { read };
+

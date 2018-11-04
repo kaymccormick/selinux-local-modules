@@ -1,0 +1,9 @@
+module local_hostname 1.0;
+
+require {
+    type hostname_t;
+    type nscd_var_run_t;
+    class file { map };
+}
+allow hostname_t nscd_var_run_t:file { map };
+

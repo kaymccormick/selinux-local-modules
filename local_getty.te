@@ -1,0 +1,12 @@
+module local_getty 1.0;
+
+require {
+    type getty_t;
+    type etc_t;
+    type user_home_t;
+    class file { map };
+    class lnk_file { read };
+}
+allow getty_t etc_t:file { map };
+allow getty_t user_home_t:lnk_file { read };
+

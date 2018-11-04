@@ -1,0 +1,32 @@
+module local_nscd 1.0;
+
+require {
+    type nscd_t;
+    type etc_t;
+    type init_t;
+    type initrc_var_run_t;
+    type nscd_var_run_t;
+    type system_dbusd_t;
+    type system_dbusd_var_run_t;
+    type user_home_t;
+    class file { map };
+    class dbus { send_msg };
+    class sock_file { write };
+    class capability { net_admin };
+    class fifo_file { write };
+    class unix_stream_socket { connectto };
+    class lnk_file { read };
+    class dir { search };
+}
+allow nscd_t etc_t:file { map };
+allow nscd_t init_t:dbus { send_msg };
+allow nscd_t initrc_var_run_t:sock_file { write };
+allow nscd_t nscd_var_run_t:file { map };
+allow nscd_t self:capability { net_admin };
+allow nscd_t self:fifo_file { write };
+allow nscd_t system_dbusd_t:dbus { send_msg };
+allow nscd_t system_dbusd_t:unix_stream_socket { connectto };
+allow nscd_t system_dbusd_var_run_t:sock_file { write };
+allow nscd_t user_home_t:lnk_file { read };
+allow nscd_t initrc_var_run_t:dir search;
+allow nscd_t system_dbusd_var_run_t:dir search;

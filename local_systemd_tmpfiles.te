@@ -1,0 +1,16 @@
+module local_systemd_tmpfiles 1.0;
+
+require {
+    type systemd_tmpfiles_t;
+    type etc_t;
+    type nscd_var_run_t;
+    type pkcs_slotd_var_lib_t;
+    type postgresql_log_t;
+    class file { map };
+    class dir { getattr };
+}
+allow systemd_tmpfiles_t etc_t:file { map };
+allow systemd_tmpfiles_t nscd_var_run_t:file { map };
+allow systemd_tmpfiles_t pkcs_slotd_var_lib_t:dir { getattr };
+allow systemd_tmpfiles_t postgresql_log_t:dir { getattr };
+

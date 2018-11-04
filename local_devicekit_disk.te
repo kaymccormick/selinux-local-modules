@@ -1,0 +1,11 @@
+module local_devicekit_disk 1.0;
+
+require {
+    type devicekit_disk_t;
+    type dmidecode_exec_t;
+    type nscd_var_run_t;
+    class file { execute execute_no_trans map open read };
+}
+allow devicekit_disk_t dmidecode_exec_t:file { execute execute_no_trans map open read };
+allow devicekit_disk_t nscd_var_run_t:file { map };
+

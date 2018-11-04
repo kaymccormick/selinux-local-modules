@@ -1,0 +1,9 @@
+module local_chkpwd 1.0;
+
+require {
+	type chkpwd_t;
+	type shadow_t;
+	class file map;
+}
+
+allow chkpwd_t shadow_t:file map;

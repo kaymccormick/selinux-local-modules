@@ -1,0 +1,9 @@
+module local_entropyd 1.0;
+
+require {
+type entropyd_t;
+type tmpfs_t;
+class dir search;
+}
+
+allow entropyd_t tmpfs_t:dir search;

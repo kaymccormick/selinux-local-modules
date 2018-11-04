@@ -1,0 +1,26 @@
+module local_snmpd 1.0;
+
+require {
+    type snmpd_t;
+    type etc_t;
+    type init_t;
+    type nscd_var_run_t;
+    type system_dbusd_t;
+    type system_dbusd_var_run_t;
+    type user_home_t;
+    class file { map };
+    class dbus { send_msg };
+    class capability { dac_read_search };
+    class unix_stream_socket { connectto };
+    class sock_file { write };
+    class lnk_file { read };
+}
+allow snmpd_t etc_t:file { map };
+allow snmpd_t init_t:dbus { send_msg };
+allow snmpd_t nscd_var_run_t:file { map };
+allow snmpd_t self:capability { dac_read_search };
+allow snmpd_t system_dbusd_t:dbus { send_msg };
+allow snmpd_t system_dbusd_t:unix_stream_socket { connectto };
+allow snmpd_t system_dbusd_var_run_t:sock_file { write };
+allow snmpd_t user_home_t:lnk_file { read };
+

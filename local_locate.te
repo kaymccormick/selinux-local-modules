@@ -1,0 +1,24 @@
+module local_locate 1.0;
+
+require {
+    type locate_t;
+    type init_var_run_t;
+    type lib_t;
+    type tmp_t;
+    type var_t;
+    class blk_file { getattr };
+    class chr_file { getattr };
+    class file { execute_no_trans create open read unlink write rename setattr };
+    class process { getsched };
+    class dir { add_name remove_name write };
+}
+allow locate_t init_var_run_t:blk_file { getattr };
+allow locate_t init_var_run_t:chr_file { getattr };
+allow locate_t lib_t:file { execute_no_trans };
+allow locate_t self:process { getsched };
+allow locate_t tmp_t:dir { add_name remove_name write };
+allow locate_t tmp_t:file { create open read unlink write };
+allow locate_t var_t:chr_file { getattr };
+allow locate_t var_t:dir { add_name remove_name write };
+allow locate_t var_t:file { create open rename setattr unlink write };
+

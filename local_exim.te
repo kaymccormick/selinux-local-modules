@@ -1,0 +1,32 @@
+module local_exim 1.0;
+
+require {
+    type exim_t;
+    type etc_t;
+    type init_t;
+    type initrc_var_run_t;
+    type nscd_t;
+    type nscd_var_run_t;
+    type system_dbusd_t;
+    type system_dbusd_var_run_t;
+    type user_home_t;
+    class file { map create rename setattr write };
+    class dbus { send_msg };
+    class sock_file { write };
+    class nscd { shmemserv getserv };
+    class capability { dac_read_search net_admin };
+    class unix_stream_socket { connectto };
+    class dir search;
+}
+allow exim_t etc_t:file { map };
+allow exim_t init_t:dbus { send_msg };
+allow exim_t initrc_var_run_t:sock_file { write };
+allow exim_t nscd_t:nscd { shmemserv getserv };
+allow exim_t nscd_var_run_t:file { map };
+allow exim_t self:capability { dac_read_search net_admin };
+allow exim_t system_dbusd_t:dbus { send_msg };
+allow exim_t system_dbusd_t:unix_stream_socket { connectto };
+allow exim_t system_dbusd_var_run_t:sock_file { write };
+allow exim_t user_home_t:file { create rename setattr write };
+allow exim_t initrc_var_run_t:dir search;
+allow exim_t system_dbusd_var_run_t:dir search;

@@ -1,0 +1,14 @@
+module local_mysqld 1.0;
+
+require {
+    type mysqld_t;
+    type nscd_t;
+    type nscd_var_run_t;
+    type tmpfs_t;
+    class nscd { shmemserv getserv };
+    class file { map };
+    class dir search;
+}
+allow mysqld_t nscd_t:nscd { shmemserv getserv };
+allow mysqld_t nscd_var_run_t:file { map };
+allow mysqld_t tmpfs_t:dir search;

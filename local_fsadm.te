@@ -1,0 +1,19 @@
+module local_fsadm 1.0;
+
+require {
+    type fsadm_t;
+    type etc_t;
+    type nscd_t;
+    type nscd_var_run_t;
+    class file { map read };
+    class fd { use };
+    class nscd { getgrp shmemgrp shmempwd };
+    class unix_stream_socket { connectto };
+    class sock_file { write };
+}
+allow fsadm_t etc_t:file { map };
+allow fsadm_t nscd_t:fd { use };
+allow fsadm_t nscd_t:nscd { getgrp shmemgrp shmempwd };
+allow fsadm_t nscd_t:unix_stream_socket { connectto };
+allow fsadm_t nscd_var_run_t:file { map read };
+allow fsadm_t nscd_var_run_t:sock_file { write };

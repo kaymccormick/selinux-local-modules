@@ -1,0 +1,21 @@
+module local_nfsd 1.0;
+
+require {
+    type nfsd_t;
+    type etc_t;
+    type init_t;
+    type nscd_t;
+    type nscd_var_run_t;
+    type system_dbusd_t;
+    class file { map };
+    class dbus { send_msg };
+    class nscd { getserv shmemserv };
+    class unix_stream_socket { connectto };
+}
+allow nfsd_t etc_t:file { map };
+allow nfsd_t init_t:dbus { send_msg };
+allow nfsd_t nscd_t:nscd { getserv shmemserv };
+allow nfsd_t nscd_var_run_t:file { map };
+allow nfsd_t system_dbusd_t:dbus { send_msg };
+allow nfsd_t system_dbusd_t:unix_stream_socket { connectto };
+

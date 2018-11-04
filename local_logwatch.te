@@ -1,0 +1,16 @@
+module local_logwatch 1.0;
+
+require {
+type logwatch_t;
+type crond_tmp_t;
+type exim_exec_t;
+type var_lock_t;
+class file { read write execute ioctl open };
+class process { getsched };
+class dir { create setattr };
+}
+
+allow logwatch_t crond_tmp_t:file { read write ioctl };
+allow logwatch_t exim_exec_t:file { open read execute };
+allow logwatch_t self:process getsched;
+allow logwatch_t var_lock_t:dir { create setattr };

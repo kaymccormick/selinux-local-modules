@@ -1,0 +1,8 @@
+module local_ndc 1.0;
+
+require {
+    type ndc_t;
+    class capability { dac_read_search };
+}
+allow ndc_t self:capability { dac_read_search };
+

@@ -1,0 +1,13 @@
+module local_system_dbusd 1.0;
+
+require {
+    type system_dbusd_t;
+    type etc_t;
+    type initrc_var_run_t;
+    class file { map };
+    class sock_file { write };
+    class dir { search };
+}
+allow system_dbusd_t etc_t:file { map };
+allow system_dbusd_t initrc_var_run_t:sock_file { write };
+allow system_dbusd_t initrc_var_run_t:dir search;

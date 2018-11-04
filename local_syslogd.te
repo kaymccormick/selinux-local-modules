@@ -1,0 +1,17 @@
+module local_syslogd 1.0;
+
+require {
+    type syslogd_t;
+    type etc_t;
+    type initrc_t;
+    type nscd_var_run_t;
+    type unreserved_port_t;
+    class file { map };
+    class process { getattr };
+    class tcp_socket { name_connect };
+}
+allow syslogd_t etc_t:file { map };
+allow syslogd_t initrc_t:process { getattr };
+allow syslogd_t nscd_var_run_t:file { map };
+allow syslogd_t unreserved_port_t:tcp_socket { name_connect };
+

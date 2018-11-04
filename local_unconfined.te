@@ -1,0 +1,13 @@
+module local_unconfined 1.0;
+
+require {
+    type unconfined_t;
+    type user_home_t;
+    class dir { add_name remove_name setattr write };
+    class file { open read setattr unlink write };
+    class lnk_file { read unlink };
+}
+#allow unconfined_t user_home_t:dir { add_name remove_name setattr write };
+#allow unconfined_t user_home_t:file { open read setattr unlink write };
+#allow unconfined_t user_home_t:lnk_file { read unlink };
+

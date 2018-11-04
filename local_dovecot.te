@@ -1,0 +1,17 @@
+module local_dovecot 1.0;
+
+require {
+    type dovecot_t;
+    type etc_t;
+    type nscd_var_run_t;
+    type smtp_port_t;
+    type tmpfs_t;
+    class file { map };
+    class tcp_socket { name_bind };
+    class lnk_file { read };
+}
+allow dovecot_t etc_t:file { map };
+allow dovecot_t nscd_var_run_t:file { map };
+allow dovecot_t smtp_port_t:tcp_socket { name_bind };
+allow dovecot_t tmpfs_t:lnk_file { read };
+

@@ -1,0 +1,26 @@
+module local_init 1.0;
+
+require {
+    type init_t;
+    type exim_t;
+    type initrc_t;
+    type nfsd_t;
+    type nscd_t;
+    type nslcd_t;
+    type semanage_t;
+    type snmpd_t;
+    type squid_t;
+    type system_mail_t;
+    class dbus { send_msg };
+    class process2 { nnp_transition };
+}
+allow init_t exim_t:dbus { send_msg };
+allow init_t initrc_t:process2 { nnp_transition };
+allow init_t nfsd_t:dbus { send_msg };
+allow init_t nscd_t:dbus { send_msg };
+allow init_t nslcd_t:dbus { send_msg };
+allow init_t semanage_t:dbus { send_msg };
+allow init_t snmpd_t:dbus { send_msg };
+allow init_t squid_t:dbus { send_msg };
+allow init_t system_mail_t:dbus { send_msg };
+

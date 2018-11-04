@@ -1,0 +1,33 @@
+module local_squid 1.0;
+
+require {
+    type squid_t;
+    type etc_t;
+    type init_t;
+    type initrc_var_run_t;
+    type nscd_t;
+    type nscd_var_run_t;
+    type squid_tmpfs_t;
+    type system_dbusd_t;
+    type system_dbusd_var_run_t;
+    type user_home_t;
+    class file { map getattr open read };
+    class dbus { send_msg };
+    class sock_file { write };
+    class nscd { shmemserv getserv };
+    class unix_stream_socket { connectto };
+    class dir search;
+}
+allow squid_t etc_t:file { map };
+allow squid_t init_t:dbus { send_msg };
+allow squid_t initrc_var_run_t:sock_file { write };
+allow squid_t nscd_t:nscd { shmemserv getserv };
+allow squid_t nscd_var_run_t:file { map };
+allow squid_t squid_tmpfs_t:file { map };
+allow squid_t system_dbusd_t:dbus { send_msg };
+allow squid_t system_dbusd_t:unix_stream_socket { connectto };
+allow squid_t system_dbusd_var_run_t:sock_file { write };
+allow squid_t user_home_t:file { getattr open read };
+allow squid_t initrc_var_run_t:dir search;
+allow squid_t system_dbusd_var_run_t:dir search;
+

@@ -1,0 +1,22 @@
+module local_systemd_logind 1.0;
+
+require {
+    type systemd_logind_t;
+    type postgresql_tmp_t;
+    type squid_tmpfs_t;
+    type tmpfs_t;
+    type apt_t;
+    type user_home_dir_t;
+    type user_tmpfs_t;
+    class file { getattr unlink };
+    class dir { remove_name write search rmdir };
+    class dbus { send_msg };
+}
+allow systemd_logind_t postgresql_tmp_t:file { getattr };
+allow systemd_logind_t squid_tmpfs_t:file { getattr };
+allow systemd_logind_t tmpfs_t:dir { remove_name write };
+allow systemd_logind_t user_home_dir_t:dir { search };
+allow systemd_logind_t user_tmpfs_t:dir { remove_name rmdir write };
+allow systemd_logind_t user_tmpfs_t:file { getattr unlink };
+allow systemd_logind_t user_home_dir_t:dir search;
+allow systemd_logind_t apt_t:dbus send_msg;

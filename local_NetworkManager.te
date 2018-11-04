@@ -1,0 +1,18 @@
+module local_NetworkManager 1.0;
+
+require {
+    type NetworkManager_t;
+    type apt_t;
+    type nscd_var_run_t;
+    type sysfs_t;
+    type user_home_t;
+    class dbus { send_msg };
+    class file { map };
+    class dir { write };
+    class lnk_file { read };
+}
+allow NetworkManager_t apt_t:dbus { send_msg };
+allow NetworkManager_t nscd_var_run_t:file { map };
+allow NetworkManager_t sysfs_t:dir { write };
+allow NetworkManager_t user_home_t:lnk_file { read };
+

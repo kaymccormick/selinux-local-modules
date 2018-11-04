@@ -1,0 +1,25 @@
+module local_system_mail 1.0;
+
+require {
+    type system_mail_t;
+    type etc_t;
+    type init_t;
+    type initrc_var_run_t;
+    type nscd_var_run_t;
+    type system_dbusd_t;
+    type system_dbusd_var_run_t;
+    class file { map };
+    class dbus { send_msg };
+    class sock_file { write };
+    class capability { dac_read_search net_admin };
+    class unix_stream_socket { connectto };
+}
+allow system_mail_t etc_t:file { map };
+allow system_mail_t init_t:dbus { send_msg };
+allow system_mail_t initrc_var_run_t:sock_file { write };
+allow system_mail_t nscd_var_run_t:file { map };
+allow system_mail_t self:capability { dac_read_search net_admin };
+allow system_mail_t system_dbusd_t:dbus { send_msg };
+allow system_mail_t system_dbusd_t:unix_stream_socket { connectto };
+allow system_mail_t system_dbusd_var_run_t:sock_file { write };
+
