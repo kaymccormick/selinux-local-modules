@@ -1,0 +1,103 @@
+policy_module(us_heptet_cerberus_php_fpm, 1.0)
+
+require {
+	type setfiles_t;
+	type var_log_t;
+	class file { relabelto };
+}
+	
+type php_fpm_t;
+type php_fpm_exec_t;
+init_daemon_domain(php_fpm_t, php_fpm_exec_t)
+
+files_rw_generic_pids(php_fpm_t)
+init_search_pids(php_fpm_t)
+
+type php_fpm_initrc_exec_t;
+type php_fpm_etc_t;
+type php_fpm_log_t;
+logging_log_file(php_fpm_log_t);
+allow php_fpm_t var_log_t:dir search_dir_perms;
+filetrans_pattern(php_fpm_t, var_log_t, php_fpm_log_t, dir)
+filetrans_pattern(php_fpm_t, php_fpm_log_t, php_fpm_log_t, file)
+
+manage_dirs_pattern(php_fpm_t, php_fpm_log_t, php_fpm_log_t)
+manage_files_pattern(php_fpm_t, php_fpm_log_t, php_fpm_log_t)
+
+files_config_file(php_fpm_etc_t)
+mmap_read_files_pattern(php_fpm_t, php_fpm_etc_t, php_fpm_etc_t)
+
+init_script_file(php_fpm_initrc_exec_t)
+allow setfiles_t php_fpm_etc_t:file relabelto;
+fs_associate(php_fpm_etc_t)
+
+files_read_etc_files(php_fpm_t)
+files_map_etc_files(php_fpm_t)
+files_read_etc_symlinks(php_fpm_t)
+miscfiles_read_generic_certs(php_fpm_t)
+miscfiles_setattr_localization(php_fpm_t)
+miscfiles_read_localization(php_fpm_t)
+corecmd_search_bin(php_fpm_t)
+dev_list_sysfs(php_fpm_t)
+	gen_require(`
+		class process getsched;
+	')
+allow php_fpm_t self:process getsched;
+
+
+allow php_fpm_t self:udp_socket create_socket_perms;
+corenet_udp_sendrecv_generic_if(php_fpm_t)
+corenet_udp_sendrecv_generic_node(php_fpm_t)
+corenet_udp_sendrecv_all_ports(php_fpm_t)
+corenet_all_recvfrom_unlabeled(php_fpm_t)
+
+# kernel sysctls
+kernel_search_fs_sysctls(php_fpm_t)
+kernel_read_kernel_sysctls(php_fpm_t)
+
+# this is apparently needed for some /tmp/.ZEND thing
+files_manage_generic_tmp_dirs(php_fpm_t)
+files_manage_generic_tmp_files(php_fpm_t)
+
+fs_rw_inherited_hugetlbfs_files(php_fpm_t)
+allow php_fpm_t hugetlbfs_t:file map;
+
+
+allow php_fpm_t self:tcp_socket create_stream_socket_perms;
+corenet_tcp_sendrecv_generic_if(php_fpm_t)
+corenet_tcp_sendrecv_generic_node(php_fpm_t)
+corenet_tcp_sendrecv_all_ports(php_fpm_t)
+corenet_tcp_connect_all_ports(php_fpm_t)
+
+corenet_all_recvfrom_unlabeled(php_fpm_t)
+
+	gen_require(`
+		attribute defined_port_type;
+		attribute unreserved_port_type;
+	')
+type php_fpm_port_t, port_type, defined_port_type;
+typeattribute php_fpm_port_t unreserved_port_type;
+
+allow php_fpm_t php_fpm_port_t:tcp_socket name_bind;
+corenet_tcp_bind_generic_node(php_fpm_t)
+
+# this is not supporting php_fpm_var_run_t
+files_check_write_pid_dirs(php_fpm_t)
+allow php_fpm_t var_run_t:file create;
+manage_sock_files_pattern(php_fpm_t, var_run_t, var_run_t)
+rw_sock_files_pattern(php_fpm_t, var_run_t, var_run_t)
+allow php_fpm_t self:capability { chown setgid setuid net_admin };
+
+gen_require(`
+	type initrc_var_run_t;
+	')
+allow php_fpm_t initrc_var_run_t:dir search;
+allow php_fpm_t self:unix_dgram_socket { create getopt setopt write };;
+
+allow php_fpm_t initrc_var_run_t:sock_file write;
+allow php_fpm_t self:capability kill;
+allow php_fpm_t var_run_t:file unlink;
+nslcd_stream_connect(php_fpm_t)
+
+allow php_fpm_t self:process { sigkill signal };
+dbus_system_bus_client(php_fpm_t)

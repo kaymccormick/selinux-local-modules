@@ -1,0 +1,3 @@
+/usr/sbin/php-fpm(.*)?	--	gen_context(system_u:object_r:php_fpm_exec_t)
+/etc/php/[^/]+/fpm(/.*)?	gen_context(system_u:object_r:php_fpm_etc_t)
+/var/log/php-fpm(/.*)?		gen_context(system_u:object_r:php_fpm_log_t)
