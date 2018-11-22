@@ -1,4 +1,4 @@
-policy_module(us_heptet_cerberus_php_fpm, 1.0)
+policy_module(php_fpm, 1.0)
 
 require {
 	type setfiles_t;
