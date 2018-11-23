@@ -95,9 +95,46 @@ allow php_fpm_t initrc_var_run_t:dir search;
 allow php_fpm_t self:unix_dgram_socket { create getopt setopt write };;
 
 allow php_fpm_t initrc_var_run_t:sock_file write;
+# allow apache to connect
+
+gen_require(`
+	type httpd_t;
+	')
+allow httpd_t var_run_t:sock_file write;
+allow httpd_t php_fpm_t:unix_stream_socket connectto;
+
 allow php_fpm_t self:capability kill;
 allow php_fpm_t var_run_t:file unlink;
 nslcd_stream_connect(php_fpm_t)
 
 allow php_fpm_t self:process { sigkill signal };
+
+# for dbus communication
 dbus_system_bus_client(php_fpm_t)
+init_dbus_chat(php_fpm_t)
+
+# needed for reading files?
+apache_read_sys_content(php_fpm_t)
+files_getattr_usr_files(php_fpm_t)
+
+# CGP
+allow php_fpm_t httpd_sys_content_t:file map;
+allow php_fpm_t self:fifo_file read;
+corecmd_check_exec_shell(php_fpm_t)
+corecmd_exec_shell(php_fpm_t)
+# allow to read user home files (right now, collectd is this?)
+userdom_read_user_home_content_files(php_fpm_t)
+corecmd_check_exec_bin_files(php_fpm_t)
+corecmd_read_bin_files(php_fpm_t)
+corecmd_exec_bin(php_fpm_t)
+files_read_usr_symlinks(php_fpm_t)
+
+gen_require(`
+	type collectd_var_lib_t;
+	')
+list_dirs_pattern(php_fpm_t, collectd_var_lib_t, collectd_var_lib_t)
+mmap_read_files_pattern(php_fpm_t, collectd_var_lib_t, collectd_var_lib_t)
+allow php_fpm_t collectd_var_lib_t:file lock;
+allow php_fpm_t self:fifo_file { getattr write };
+# for types.db
+files_read_usr_files(php_fpm_t)
